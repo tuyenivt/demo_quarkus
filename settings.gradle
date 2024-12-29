@@ -10,3 +10,4 @@ pluginManagement {
 }
 rootProject.name='demo-quarkus'
 include 'inventory-management'
+include 'healthcare-management'
