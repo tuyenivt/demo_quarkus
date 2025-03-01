@@ -10,3 +10,4 @@ pluginManagement {
 }
 rootProject.name='demo-quarkus'
 include 'healthcare-management'
+include 'notification-service'
