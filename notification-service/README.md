@@ -13,8 +13,9 @@
 
 ## Docker Commands
 ```shell
-docker run -d --name notification-postgres -e POSTGRES_USER=yourusername -e POSTGRES_PASSWORD=yourpassword -e POSTGRES_DB=notificationdb -p 5432:5432 postgres:17
-docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 -e RABBITMQ_DEFAULT_USER=guest -e RABBITMQ_DEFAULT_PASS=guest rabbitmq:4-management
+docker run -d --name notification-postgres -e POSTGRES_USER=yourusername -e POSTGRES_PASSWORD=yourpassword -e POSTGRES_DB=notificationdb -p 5432:5432 postgres:17.4
+docker run -d --name notification-rabbitmq -e RABBITMQ_DEFAULT_USER=guest -e RABBITMQ_DEFAULT_PASS=guest -p 5672:5672 -p 15672:15672 rabbitmq:4.0-management
+docker run -d --name notification-redis -p 6379:6379 redis:7.4-alpine
 ```
 
 ## Start the Application
