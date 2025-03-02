@@ -1,11 +1,14 @@
 package com.example.service;
 
+import com.example.exception.NotificationException;
 import io.vertx.redis.client.Command;
 import io.vertx.redis.client.Redis;
 import io.vertx.redis.client.Request;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+
+import java.util.concurrent.ExecutionException;
 
 @ApplicationScoped
 public class RateLimiterService {
@@ -35,17 +38,22 @@ public class RateLimiterService {
      * @return true if the request is allowed, false if rate limited
      */
     public boolean isAllowed(String key, int maxRequests, int windowSeconds) {
-        // Increment the counter atomically
-        var incrRequest = Request.cmd(Command.INCR).arg(key);
-        var response = redisClient.send(incrRequest);
-        var currentCount = response.result().toLong();
+        try {
+            // Increment the counter atomically
+            var incrRequest = Request.cmd(Command.INCR).arg(key);
+            var response = redisClient.send(incrRequest).toCompletionStage().toCompletableFuture().get();
+            var currentCount = response.toLong();
 
-        // If this is the first request in the window, set the expiration for the key
-        if (currentCount == 1) {
-            redisClient.send(Request.cmd(Command.EXPIRE).arg(key).arg(windowSeconds));
+            // If this is the first request in the window, set the expiration for the key
+            if (currentCount == 1) {
+                redisClient.send(Request.cmd(Command.EXPIRE).arg(key).arg(windowSeconds));
+            }
+
+            // If the count exceeds the allowed maximum, deny the request
+            return currentCount <= maxRequests;
+        } catch (InterruptedException | ExecutionException e) {
+            Thread.currentThread().interrupt(); // restore interrupted status if needed
+            throw new NotificationException("Redis operation failed", e);
         }
-
-        // If the count exceeds the allowed maximum, deny the request
-        return currentCount <= maxRequests;
     }
 }

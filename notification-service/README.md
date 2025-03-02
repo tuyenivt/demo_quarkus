@@ -22,3 +22,17 @@ docker run -d --name notification-redis -p 6379:6379 redis:7.4-alpine
 ```shell
 ./gradlew quarkus:dev
 ```
+
+## Testing REST APIs
+
+### Send a notification
+```shell
+curl -X POST http://localhost:8080/notifications \
+     -H "Content-Type: application/json" \
+     -d '{
+           "requestId": "b4618a21-9fff-4ee8-8a11-cfb53dcea08d",
+           "recipients": ["abc@example.com"],
+           "message": "Your appointment is confirmed.",
+           "channel": "EMAIL"
+         }'
+```
