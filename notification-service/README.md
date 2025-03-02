@@ -14,6 +14,7 @@
 ## Docker Commands
 ```shell
 docker run -d --name notification-postgres -e POSTGRES_USER=yourusername -e POSTGRES_PASSWORD=yourpassword -e POSTGRES_DB=notificationdb -p 5432:5432 postgres:17
+docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 -e RABBITMQ_DEFAULT_USER=guest -e RABBITMQ_DEFAULT_PASS=guest rabbitmq:4-management
 ```
 
 ## Start the Application
