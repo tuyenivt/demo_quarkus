@@ -1,18 +1,22 @@
 package com.example.service;
 
 import io.vertx.redis.client.Command;
+import io.vertx.redis.client.Redis;
 import io.vertx.redis.client.Request;
-import io.vertx.redis.client.impl.RedisClient;
 import jakarta.enterprise.context.ApplicationScoped;
-import lombok.RequiredArgsConstructor;
+import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped
-@RequiredArgsConstructor
 public class IdempotencyService {
     private static final String PREFIX = "notification:reqId:";
 
-    private final RedisClient redisClient;
+    private final Redis redisClient;
+
+    @Inject
+    public IdempotencyService(Redis redisClient) {
+        this.redisClient = redisClient;
+    }
 
     @ConfigProperty(name = "idempotency.expire-seconds", defaultValue = "86400")
     private Long expireSeconds;

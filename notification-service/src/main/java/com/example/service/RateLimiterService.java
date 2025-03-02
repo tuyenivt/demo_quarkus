@@ -1,15 +1,19 @@
 package com.example.service;
 
 import io.vertx.redis.client.Command;
+import io.vertx.redis.client.Redis;
 import io.vertx.redis.client.Request;
-import io.vertx.redis.client.impl.RedisClient;
 import jakarta.enterprise.context.ApplicationScoped;
-import lombok.RequiredArgsConstructor;
+import jakarta.inject.Inject;
 
 @ApplicationScoped
-@RequiredArgsConstructor
 public class RateLimiterService {
-    private final RedisClient redisClient;
+    private final Redis redisClient;
+
+    @Inject
+    public RateLimiterService(Redis redisClient) {
+        this.redisClient = redisClient;
+    }
 
     /**
      * Checks if a request is allowed based on a maximum number of requests in a given time window.
