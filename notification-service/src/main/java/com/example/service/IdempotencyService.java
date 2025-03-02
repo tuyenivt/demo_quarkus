@@ -11,15 +11,15 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 public class IdempotencyService {
     private static final String PREFIX = "notification:reqId:";
 
+    @ConfigProperty(name = "idempotency.expire-seconds", defaultValue = "86400")
+    private Long expireSeconds;
+
     private final Redis redisClient;
 
     @Inject
     public IdempotencyService(Redis redisClient) {
         this.redisClient = redisClient;
     }
-
-    @ConfigProperty(name = "idempotency.expire-seconds", defaultValue = "86400")
-    private Long expireSeconds;
 
     public boolean isDuplicate(String requestId) {
         var request = Request.cmd(Command.GET).arg(createKey(requestId));

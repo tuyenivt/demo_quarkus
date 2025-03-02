@@ -5,14 +5,25 @@ import io.vertx.redis.client.Redis;
 import io.vertx.redis.client.Request;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped
 public class RateLimiterService {
+    @ConfigProperty(name = "rate-limiter.max-requests", defaultValue = "1000")
+    private Integer defaultMaxRequests;
+
+    @ConfigProperty(name = "rate-limiter.window-seconds", defaultValue = "60")
+    private Integer defaultWindowSeconds;
+
     private final Redis redisClient;
 
     @Inject
     public RateLimiterService(Redis redisClient) {
         this.redisClient = redisClient;
+    }
+
+    public boolean isAllowed(String key) {
+        return isAllowed(key, defaultMaxRequests, defaultWindowSeconds);
     }
 
     /**
