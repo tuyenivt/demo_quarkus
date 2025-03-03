@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.channel.NotificationChannel;
 import com.example.exception.NotificationException;
 import com.example.model.NotificationRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,7 +20,6 @@ import java.util.concurrent.TimeoutException;
 @ApplicationScoped
 public class NotificationService {
     private static final Logger LOGGER = Logger.getLogger(NotificationService.class);
-    private static final String NOTIFICATION_QUEUE = "notification.queue";
 
     private final RateLimiterService rateLimiterService;
     private final IdempotencyService idempotencyService;
@@ -42,7 +42,7 @@ public class NotificationService {
         try {
             connection = rabbitMQClient.connect();
             channel = connection.createChannel();
-            channel.queueDeclare(NOTIFICATION_QUEUE, true, false, false, null);
+            channel.queueDeclare(NotificationChannel.NOTIFICATION_QUEUE, true, false, false, null);
         } catch (IOException e) {
             throw new NotificationException("Failed to initialize RabbitMQ channel", e);
         }
@@ -65,7 +65,7 @@ public class NotificationService {
         }
 
         try {
-            channel.basicPublish("", NOTIFICATION_QUEUE, null, objectMapper.writeValueAsBytes(request));
+            channel.basicPublish("", NotificationChannel.NOTIFICATION_QUEUE, null, objectMapper.writeValueAsBytes(request));
             LOGGER.infof("Request enqueued for requestId=%s", request.getRequestId());
         } catch (Exception e) {
             LOGGER.error("Failed to publish to RabbitMQ", e);
