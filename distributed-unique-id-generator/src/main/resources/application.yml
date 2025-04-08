@@ -1,0 +1,23 @@
+quarkus:
+  application:
+    name: distributed-unique-id-generator
+  log:
+    level: INFO
+    console:
+      json: true
+  http:
+    port: 8080
+  smallrye-health:
+    root-path: /health
+  metrics:
+    enabled: true
+    prometheus:
+      enabled: true
+      path: /metrics
+
+id-generator:
+  node-id: ${NODE_ID:0}  # Can be overridden by environment variable
+  epoch: 1609459200000   # 2021-01-01 00:00:00 UTC
+  sequence-bits: 12      # 4096 unique IDs per millisecond
+  node-id-bits: 10       # 1024 unique nodes
+  timestamp-bits: 41     # ~69 years of timestamps 
