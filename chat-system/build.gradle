@@ -16,7 +16,7 @@ dependencies {
     implementation 'io.quarkus:quarkus-hibernate-orm-panache'
     implementation 'io.quarkus:quarkus-jdbc-postgresql'
     implementation 'io.quarkus:quarkus-redis-client'
-    implementation 'io.quarkus:quarkus-smallrye-reactive-messaging'
+    implementation 'io.quarkus:quarkus-messaging'
     implementation 'io.quarkus:quarkus-smallrye-health'
     implementation 'io.quarkus:quarkus-arc'
     
@@ -54,4 +54,4 @@ compileJava {
 
 compileTestJava {
     options.encoding = 'UTF-8'
-} 
+}

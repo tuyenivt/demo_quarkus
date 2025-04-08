@@ -49,7 +49,7 @@ The system follows a microservices-inspired architecture with the following comp
 2. **Redis Pub/Sub**: Enables message broadcasting across multiple instances
 3. **Message Service**: Manages message processing and persistence
 4. **User Service**: Handles user management and presence
-5. **PostgreSQL**: Stores user data and message history
+5. **Postgres**: Stores user data and message history
 6. **REST API**: Provides endpoints for user management and message history
 
 ## Prerequisites
@@ -62,29 +62,23 @@ The system follows a microservices-inspired architecture with the following comp
 
 ## Setup
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd chat-system
-   ```
-
-2. **Configure Postgres**
+1. **Configure Postgres**
    - Create a database named `chatsystem`
    - Update the database configuration in `application.properties`
 
-3. **Configure Redis**
+2. **Configure Redis**
    - Install and start Redis server
    - Update Redis configuration in `application.properties`
 
-4. **Build the application**
-   ```bash
-   ./gradlew build
-   ```
+3. **Build the application**
+```bash
+./gradlew build
+```
 
-5. **Run the application**
-   ```bash
-   ./gradlew quarkusDev
-   ```
+4. **Run the application**
+```bash
+./gradlew quarkusDev
+```
 
 ## API Endpoints
 
