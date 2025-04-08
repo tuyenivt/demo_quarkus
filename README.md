@@ -3,3 +3,4 @@
 - [Notification Service](notification-service)
 - [Chat System](chat-system)
 - [Distributed Unique ID Generator](distributed-unique-id-generator)
+- [News Feed System](news-feed-system)
