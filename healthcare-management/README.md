@@ -18,8 +18,9 @@
 
 ## Docker Commands
 ```shell
-docker run -d --name healthcare-postgres -e POSTGRES_USER=yourusername -e POSTGRES_PASSWORD=yourpassword -e POSTGRES_DB=healthcaredb -p 5432:5432 postgres:17
-docker run -d --name keycloak -p 8081:8080 -e KC_BOOTSTRAP_ADMIN_USERNAME=admin -e KC_BOOTSTRAP_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:26.0.7 start-dev
+docker network create devnet
+docker run -d --network devnet --name healthcare-postgres -e POSTGRES_USER=yourusername -e POSTGRES_PASSWORD=yourpassword -e POSTGRES_DB=healthcaredb -p 5432:5432 postgres:17.6
+docker run -d --network devnet --name keycloak -p 8081:8080 -e KC_BOOTSTRAP_ADMIN_USERNAME=admin -e KC_BOOTSTRAP_ADMIN_PASSWORD=admin -e KC_DB=postgres -e KC_DB_URL=jdbc:postgresql://healthcare-postgres:5432/healthcaredb -e KC_DB_USERNAME=yourusername -e KC_DB_PASSWORD=yourpassword quay.io/keycloak/keycloak:26.3 start-dev
 ```
 
 ## Keycloak Realm Configuration
